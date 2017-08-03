@@ -1,15 +1,48 @@
+"use strict"
 var express = require("express");
 var path = require("path");
 var app = express();
 var port = 8000;
 
+const cookieParser = require('cookie-parser');
+
+const jwt = require('jsonwebtoken');
+const uuidv4 = require('uuid/v4');
+
+const {TOKEN_SECRET} = require('./config');
+
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "static")));
 app.set('views', path.join(__dirname, "views"));
 app.set('view engine', 'ejs');
 
 var results = {cheezits: 0, goldfish: 0};
 
-app.get('/', function(req, res){
+const authenticate = (req, res, next) => {
+	const token = req.cookies.token;
+
+
+
+	console.log(typeof uuidv4());
+
+	if(token) {
+		jwt.verify(token, TOKEN_SECRET, (err, payload) => {
+			if(err) next();
+			res.redirect('/results');
+		})
+	} else {
+		const newToken = jwt.sign({
+			id: uuidv4()
+		}, TOKEN_SECRET);
+
+		res.cookie('token', newToken, {maxAge: 1000*86400*30, httpOnly: true});
+		console.log('entered else');
+
+		next();
+	}
+}
+
+app.get('/', authenticate, function(req, res){
 	res.render('index');
 });
 
