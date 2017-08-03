@@ -11,15 +11,17 @@
 <h3>Cheez Its or Goldfish</h3>
 <h4 id="cheezits">Cheez Its: </h4>
 <h4 id="goldfish">Goldfish: </h4>
+
 <div style="width: 400px; height: 400px;">
 	<canvas id="myChart" width="400" height="400"></canvas>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
     var socket = io.connect();
     socket.emit("getResults");
     socket.on("results", function(data){
-    	console.log(data.results);
+    	
     	$('#cheezits').html(`Cheez Its: ${data.results.cheezits}`);
     	$('#goldfish').html(`Goldfish: ${data.results.goldfish}`);
 
@@ -30,8 +32,8 @@ $(document).ready(function(){
 		    	datasets: [{
 		    		data: [data.results.cheezits, data.results.goldfish],
 		    		backgroundColor: [
-		    			"#ff5500",
-		    			"#ffff00"
+		    			"#f50",
+		    			"#ff0"
 		    		],
 		    	}],
 		    	labels: [
@@ -41,9 +43,9 @@ $(document).ready(function(){
             	borderWidth: 1
 		    },
 		});
+
 	});
 });
 </script>
 </body>
 </html>
-
