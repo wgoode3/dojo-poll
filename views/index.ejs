@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Poll</title>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+<h1>Dojo poll</h1>
+<h3>Cheez Its or Goldfish?</h3>
+<button id="cheezits">Cheez Its</button>
+<button id="goldfish">Goldfish</button>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    var socket = io.connect();
+    $('#cheezits').click(function(){
+    	socket.emit("vote", {choice: 'cheezits'});
+    	window.location = '/results'
+    });
+    $('#goldfish').click(function(){
+    	socket.emit("vote", {choice: 'goldfish'});
+    	window.location = '/results'
+    });
+});
+</script>
+</script>
+</body>
+</html>
